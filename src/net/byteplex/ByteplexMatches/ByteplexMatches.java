@@ -6,7 +6,7 @@ public class ByteplexMatches extends JavaPlugin {
 
     @Override
     public void onEnable(){
-
+        this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
     }
 
     @Override

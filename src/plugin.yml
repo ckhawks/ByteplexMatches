@@ -1,9 +1,9 @@
 name: ByteplexMatches
 version: 2018.3.12.1
 author:
-  - Stellaric
-  - WillOCN
-  - Guitaric
-  - sierek_1337
+ - Stellaric
+ - WillOCN
+ - Guitaric
+ - sierek_1337
 main: net.byteplex.ByteplexMatches.ByteplexMatches
 commands:

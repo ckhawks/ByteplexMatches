@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="BytePlexMatches">
-    <output-path>$PROJECT_DIR$/..</output-path>
-    <root id="archive" name="BytePlexMatches.jar">
-      <element id="module-output" name="BytePlexMatches" />
-    </root>
-  </artifact>
-</component>

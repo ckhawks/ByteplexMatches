@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="ByteplexCore">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../ByteplexCore" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../ByteplexCore/src" />
+    </SOURCES>
+  </library>
+</component>
