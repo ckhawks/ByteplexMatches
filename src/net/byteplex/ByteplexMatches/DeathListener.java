@@ -14,7 +14,7 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
-        Player victim = e.getEntity().getPlayer();
+        Player victim = e.getEntity();
         Player killer = e.getEntity().getKiller();
 
         ItemStack killerItem = killer.getInventory().getItemInMainHand();
@@ -42,7 +42,7 @@ public class DeathListener implements Listener {
             itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1, itemName.length());
         }
 
-        e.setDeathMessage(ChatFormat.formatExclaim(ChatLevel.DEATH,
+        e.setDeathMessage(ChatFormat.formatExclaim(ChatLevel.INFO,
                 ChatColor.BLUE + victim.getName()
                         + ChatColor.WHITE + " has been killed by "
                         + ChatColor.RED + killer.getName()
@@ -50,5 +50,6 @@ public class DeathListener implements Listener {
                         + ChatColor.GREEN  + itemName
                         + ChatColor.WHITE + " from "
                         + ChatColor.RED + playerDistance + " blocks " + ChatColor.WHITE + "away."));
+
     }
 }

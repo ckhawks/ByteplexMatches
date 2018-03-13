@@ -7,8 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="spigot-1.12.2" level="project" />
+    <orderEntry type="library" name="dynmap-2.5" level="project" />
     <orderEntry type="library" name="ByteplexCore" level="project" />
-    <orderEntry type="library" name="ByteplexCore1" level="project" />
   </component>
 </module>

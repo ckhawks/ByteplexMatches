@@ -1,6 +1,7 @@
 <component name="libraryTable">
   <library name="ByteplexCore">
     <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ByteplexCore.jar!/" />
       <root url="file://$PROJECT_DIR$/../ByteplexCore" />
     </CLASSES>
     <JAVADOC />
