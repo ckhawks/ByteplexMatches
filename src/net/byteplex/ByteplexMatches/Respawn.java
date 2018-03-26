@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
 
+import static net.byteplex.ByteplexMatches.SetSpawnLocation.setloc;
 import static org.bukkit.Bukkit.broadcastMessage;
 
 public class Respawn implements Listener {
@@ -87,7 +88,11 @@ public class Respawn implements Listener {
                         + ChatColor.WHITE + " from "
                         + ChatColor.RED + playerDistance + ((playerDistance == 1) ? " block " : " blocks ") + ChatColor.WHITE + "away."));
 
-        victim.teleport(this.loc); // victim.getWorld().getSpawnLocation()
+        if (setloc){
+            victim.teleport(this.loc);
+        } else{
+            victim.teleport(victim.getWorld().getSpawnLocation());
+        }
         victim.setHealth(20.0);
         victim.setFoodLevel(20);
     }

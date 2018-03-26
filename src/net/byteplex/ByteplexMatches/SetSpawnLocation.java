@@ -13,10 +13,11 @@ import org.bukkit.entity.Player;
 import java.util.Set;
 
 public class SetSpawnLocation implements CommandExecutor {
-
+    static boolean setloc;
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player){
+            setloc = true;
             Player player = (Player) commandSender;
             Location loc = player.getTargetBlock((Set< Material>)null,5).getLocation();
             Respawn.loc = new Location(loc.getWorld(), loc.getX() + .5, loc.getY() + 1, loc.getZ() + .5);

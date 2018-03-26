@@ -10,3 +10,6 @@ commands:
   setloc:
     description: Set your spawn location by looking at it
     usage: /setloc
+  team:
+    description: Place yourself on blue or red team
+    usage: /team <red>,<blue>
