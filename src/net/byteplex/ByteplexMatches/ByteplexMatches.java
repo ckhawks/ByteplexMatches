@@ -1,5 +1,6 @@
 package net.byteplex.ByteplexMatches;
 
+import net.byteplex.ByteplexMatches.teams.Damage;
 import net.byteplex.ByteplexMatches.teams.TeamCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public class ByteplexMatches extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new Respawn(), this);
         this.getCommand("setloc").setExecutor(new SetSpawnLocation());
         this.getCommand("team").setExecutor(new TeamCommand());
+        this.getServer().getPluginManager().registerEvents(new Damage(), this);
     }
 
     @Override

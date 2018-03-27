@@ -17,13 +17,12 @@ import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 public class Damage implements Listener {
 
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {
             Player victim = (Player) e.getEntity();
             if (e.getDamager() instanceof Player) {
                 Player attacker = (Player) e.getDamager();
-                Bukkit.getServer().broadcastMessage("Shooter name" + attacker.getName() + " victim name" + victim.getName());
                 if (redTeam.contains(attacker.getName()) && redTeam.contains(victim.getName()) || blueTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())) {
                     e.setCancelled(true);
                     attacker.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Don't hurt your team!"));
