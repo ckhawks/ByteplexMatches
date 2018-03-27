@@ -13,3 +13,4 @@ commands:
   team:
     description: Place yourself on blue or red team
     usage: /team <red>,<blue>
+softdepend: [NameTagChanger, ProtocolLib]

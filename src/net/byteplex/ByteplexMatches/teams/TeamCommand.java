@@ -1,5 +1,6 @@
 package net.byteplex.ByteplexMatches.teams;
 
+import com.bringholm.nametagchanger.NameTagChanger;
 import net.byteplex.ByteplexCore.util.ChatFormat;
 import net.byteplex.ByteplexCore.util.ChatLevel;
 import net.byteplex.ByteplexMatches.ByteplexMatches;
@@ -13,8 +14,6 @@ import static net.byteplex.ByteplexMatches.ByteplexMatches.blueTeam;
 import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 
 public class TeamCommand implements CommandExecutor {
-
-
     public static boolean isInTeam(Player player) {
         return redTeam.contains(player.getName()) || blueTeam.contains(player.getName());
     }
@@ -28,10 +27,12 @@ public class TeamCommand implements CommandExecutor {
                 switch (input) {
                     case "red":
                         redTeam.add(p.getName());
+                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.RED + p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
                         break;
                     case "blue":
                         ByteplexMatches.blueTeam.add(p.getName());
+                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.BLUE + p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                         break;
                     default:
