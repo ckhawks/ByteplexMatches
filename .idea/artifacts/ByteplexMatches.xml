@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/..</output-path>
     <root id="archive" name="ByteplexMatches.jar">
       <element id="module-output" name="ByteplexMatches" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../NameTagChanger v1.1-SNAPSHOT.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

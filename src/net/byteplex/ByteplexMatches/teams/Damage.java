@@ -16,7 +16,6 @@ import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 
 public class Damage implements Listener {
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerHit(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {

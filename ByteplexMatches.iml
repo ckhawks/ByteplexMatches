@@ -7,7 +7,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="dynmap-2.5" level="project" />
-    <orderEntry type="library" name="ByteplexCore" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="dynmap-2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="ByteplexCore" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="spigot-1.12.2" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../NameTagChanger v1.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
