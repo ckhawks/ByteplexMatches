@@ -13,3 +13,4 @@ commands:
   team:
     description: Place yourself on a team
     usage: /team <red/blue>
+softdepend: [ProtocolLib]
