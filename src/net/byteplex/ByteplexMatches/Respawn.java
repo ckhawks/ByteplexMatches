@@ -2,7 +2,6 @@ package net.byteplex.ByteplexMatches;
 
 import net.byteplex.ByteplexCore.util.ChatFormat;
 import net.byteplex.ByteplexCore.util.ChatLevel;
-import org.apache.logging.log4j.util.PropertiesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,9 +13,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
-
 import static net.byteplex.ByteplexMatches.SetSpawnLocation.setloc;
-import static org.bukkit.Bukkit.broadcastMessage;
+
 
 public class Respawn implements Listener {
     public static Location loc;
