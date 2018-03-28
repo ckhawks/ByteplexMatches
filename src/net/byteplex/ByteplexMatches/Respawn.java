@@ -21,6 +21,8 @@ import static net.byteplex.ByteplexMatches.SetSpawnLocation.setloc;
 
 public class Respawn implements Listener {
     public static Location loc;
+    int redKills = 0;
+    int blueKills = 0;
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
@@ -47,6 +49,20 @@ public class Respawn implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    public void teamKills(Player victim, Player attacker){
+        if(redTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())){
+            redKills++;
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
+        } else if(redTeam.contains(victim.getName()) && blueTeam.contains(attacker.getName())){
+            blueKills++;
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
+        }
+        else{
+            Bukkit.broadcastMessage("this is not right" + redTeam.get(0) + blueTeam.get(0));
+
         }
     }
 
@@ -99,22 +115,5 @@ public class Respawn implements Listener {
         victim.setHealth(20.0);
         victim.setFoodLevel(20);
     }
-
-    public void teamKills(Player victim, Player attacker){
-        int redKills = 0;
-        int blueKills = 0;
-        if(redTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())){
-            redKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
-        } else if(redTeam.contains(victim.getName()) && blueTeam.contains(attacker.getName())){
-            blueKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
-        }
-        else{
-            Bukkit.broadcastMessage("this is not right" + redTeam.get(0) + blueTeam.get(0));
-
-        }
-    }
-
 }
 
