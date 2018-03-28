@@ -15,10 +15,6 @@ import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 public class TeamCommand implements CommandExecutor {
 
 
-    public static boolean isInTeam(Player player) {
-        return redTeam.contains(player.getName()) || blueTeam.contains(player.getName());
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         String input = args[0].toLowerCase();
@@ -26,10 +22,10 @@ public class TeamCommand implements CommandExecutor {
             Player p = (Player) sender;
             switch (input) {
                 case "red":
-                    if (redTeam.contains(p.getName())) {
+                    if (redTeam.contains(p.getName())) { //if player is on red team then remove him
                         redTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                    } else if (blueTeam.contains(p.getName())) {
+                    } else if (blueTeam.contains(p.getName())) { //if player is on blue team then remove him
                         blueTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     }

@@ -13,6 +13,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
+
+import static net.byteplex.ByteplexMatches.ByteplexMatches.blueTeam;
+import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 import static net.byteplex.ByteplexMatches.SetSpawnLocation.setloc;
 
 
@@ -30,6 +33,7 @@ public class Respawn implements Listener {
                 if (victim.getHealth() - e.getFinalDamage() < 1) {
                     e.setCancelled(true);
                     doDeath(victim, attacker);
+                    teamKills(victim, attacker);
                 }
 
             } else if (e.getDamager() instanceof Projectile) {
@@ -39,6 +43,7 @@ public class Respawn implements Listener {
                     if (victim.getHealth() - e.getFinalDamage() < 1) {
                         e.setCancelled(true);
                         doDeath(victim, attacker);
+                        teamKills(victim,attacker);
                     }
                 }
             }
@@ -94,5 +99,22 @@ public class Respawn implements Listener {
         victim.setHealth(20.0);
         victim.setFoodLevel(20);
     }
+
+    public void teamKills(Player victim, Player attacker){
+        int redKills = 0;
+        int blueKills = 0;
+        if(redTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())){
+            redKills++;
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
+        } else if(redTeam.contains(victim.getName()) && blueTeam.contains(attacker.getName())){
+            blueKills++;
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
+        }
+        else{
+            Bukkit.broadcastMessage("this is not right" + redTeam.get(0) + blueTeam.get(0));
+
+        }
+    }
+
 }
 
