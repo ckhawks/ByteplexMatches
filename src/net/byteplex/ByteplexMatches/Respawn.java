@@ -55,14 +55,10 @@ public class Respawn implements Listener {
     public void teamKills(Player victim, Player attacker){
         if(redTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())){
             redKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + ChatColor.RESET + " Blue team kills: " + ChatColor.BLUE + blueKills));
         } else if(redTeam.contains(victim.getName()) && blueTeam.contains(attacker.getName())){
             blueKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + " Blue team kills: " + ChatColor.BLUE + blueKills));
-        }
-        else{
-            Bukkit.broadcastMessage("this is not right" + redTeam.get(0) + blueTeam.get(0));
-
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + ChatColor.RESET + " Blue team kills: " + ChatColor.BLUE + blueKills));
         }
     }
 
