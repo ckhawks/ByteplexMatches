@@ -2,69 +2,122 @@ package net.byteplex.ByteplexMatches;
 
 import net.byteplex.ByteplexCore.util.ChatFormat;
 import net.byteplex.ByteplexCore.util.ChatLevel;
+import net.byteplex.ByteplexMatches.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import static net.byteplex.ByteplexMatches.ByteplexMatches.blueTeam;
 import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
-import static net.byteplex.ByteplexMatches.SetSpawnLocation.setloc;
-
 
 public class Respawn implements Listener {
-    public static Location loc;
-    int redKills = 0;
-    int blueKills = 0;
+    public static Location redSpawn;
+    public static Location blueSpawn;
+    public static Location neutralSpawn;
+    private int redKills = 0;
+    private int blueKills = 0;
+    private Map<UUID, Timestamp> lastTeamkillComplain = new HashMap<>();
+
+    public Respawn(){
+        redSpawn = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
+        blueSpawn = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
+        neutralSpawn = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
+    }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent e) {
+    public void onEntityDamage(EntityDamageByEntityEvent e) {
+        Player attacker = null;
+        Player victim = null;
+
+        // check that the victim entity is a player
         if (e.getEntity() instanceof Player) {
-            Player victim = (Player) e.getEntity();
+            victim = (Player) e.getEntity();
 
+            // check that attacking entity is player
             if (e.getDamager() instanceof Player) {
-                Player attacker = (Player) e.getDamager();
+                attacker = (Player) e.getDamager();
 
-                if (victim.getHealth() - e.getFinalDamage() < 1) {
-                    e.setCancelled(true);
-                    doDeath(victim, attacker);
-                    teamKills(victim, attacker);
-                }
-
+                // check if attacking entity is projectile (arrow, snowball, egg, fire charge, ghast fireball, etc)
             } else if (e.getDamager() instanceof Projectile) {
                 ProjectileSource src = ((Projectile) e.getDamager()).getShooter();
                 if (src instanceof Player) {
-                    Player attacker = (Player) src;
-                    if (victim.getHealth() - e.getFinalDamage() < 1) {
-                        e.setCancelled(true);
-                        doDeath(victim, attacker);
-                        teamKills(victim,attacker);
-                    }
+                    attacker = (Player) src;
                 }
+            }
+        }
+
+        // if there is a player attacker and victim after projectile checks
+        if (attacker != null && victim != null) {
+
+            // team kill check
+            if (getTeam(attacker) == getTeam(victim)) {
+                e.setCancelled(true);
+
+                // don't display teamkill complaining message unless more than 3 seconds have passed since last teamkill attempt
+                Timestamp t = new Timestamp(System.currentTimeMillis());
+                Timestamp t2 = lastTeamkillComplain.get(attacker.getUniqueId());
+                if (t2 != null) {
+                    if (t.getTime() - t2.getTime() > 3000) {
+                        attacker.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Don't attack your teammates!"));
+                        lastTeamkillComplain.replace(attacker.getUniqueId(), t);
+                    }
+                } else {
+                    attacker.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Don't attack your teammates!"));
+                    lastTeamkillComplain.put(attacker.getUniqueId(), t);
+                }
+            }
+
+            // death check
+            if (victim.getHealth() - e.getFinalDamage() < 1) {
+                e.setCancelled(true);
+                doDeath(victim, attacker);
+                teamKills(victim, attacker);
             }
         }
     }
 
-    public void teamKills(Player victim, Player attacker){
-        if(redTeam.contains(attacker.getName()) && blueTeam.contains(victim.getName())){
-            redKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + ChatColor.RESET + " Blue team kills: " + ChatColor.BLUE + blueKills));
-        } else if(redTeam.contains(victim.getName()) && blueTeam.contains(attacker.getName())){
-            blueKills++;
-            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "Red team kills: " + ChatColor.RED + redKills + ChatColor.RESET + " Blue team kills: " + ChatColor.BLUE + blueKills));
+    private int getTeam(Player player) {
+        if (redTeam.contains(player.getUniqueId())) {
+            return Team.RED;
+        } else if (blueTeam.contains(player.getUniqueId())) {
+            return Team.BLUE;
+        } else {
+            return Team.NONE;
         }
     }
 
-    public void doDeath(Player victim, Player attacker) {
-        ItemStack killerItem = attacker.getInventory().getItemInMainHand();
+    private void teamKills(Player victim, Player attacker) {
+        if (getTeam(attacker) != getTeam(victim)) {
+            switch (getTeam(attacker)) {
+                case Team.RED:
+                    redKills++;
+                    break;
+                case Team.BLUE:
+                    blueKills++;
+                    break;
+            }
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, " -- TDM -- "));
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, ChatColor.RED + "Red: " + ChatColor.WHITE + redKills + ChatColor.GRAY + " | " + ChatColor.BLUE + "Blue: " + ChatColor.WHITE + blueKills));
+        }
+    }
 
+    private void doDeath(Player victim, Player attacker) {
+        ItemStack killerItem = attacker.getInventory().getItemInMainHand();
 
         // calculate distance between attacker and victim
         int playerDistance = (int) attacker.getLocation().distance(victim.getLocation());
@@ -93,7 +146,6 @@ public class Respawn implements Listener {
             itemName = "Fists";
         }
 
-
         Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO,
                 ChatColor.BLUE + victim.getName()
                         + ChatColor.WHITE + " has been killed by "
@@ -103,13 +155,32 @@ public class Respawn implements Listener {
                         + ChatColor.WHITE + " from "
                         + ChatColor.RED + playerDistance + ((playerDistance == 1) ? " block " : " blocks ") + ChatColor.WHITE + "away."));
 
-        if (setloc){
-            victim.teleport(this.loc);
-        } else{
-            victim.teleport(victim.getWorld().getSpawnLocation());
+        switch (getTeam(victim)) {
+            case Team.RED:
+                victim.teleport(redSpawn);
+                break;
+            case Team.BLUE:
+                victim.teleport(blueSpawn);
+                break;
+            case Team.NONE:
+                victim.teleport(neutralSpawn);
+                break;
+            default:
+                victim.teleport(victim.getWorld().getSpawnLocation());
+                break;
         }
         victim.setHealth(20.0);
         victim.setFoodLevel(20);
+
+        PlayerInventory i = victim.getInventory();
+        i.clear();
+        i.addItem(new ItemStack(Material.IRON_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.WOOD, 64));
+        i.setItem(10, new ItemStack(Material.ARROW, 64));
+        i.setHelmet(new ItemStack(Material.LEATHER_HELMET));
+        i.setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+        i.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+        i.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+
     }
 }
 

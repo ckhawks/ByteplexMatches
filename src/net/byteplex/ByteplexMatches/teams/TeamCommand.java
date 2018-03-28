@@ -14,7 +14,6 @@ import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
 
 public class TeamCommand implements CommandExecutor {
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         String input = args[0].toLowerCase();
@@ -29,7 +28,7 @@ public class TeamCommand implements CommandExecutor {
                         blueTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     }
-                    redTeam.add(p.getName());
+                    redTeam.add(p.getUniqueId());
                     NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.RED + p.getName());
                     p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
                     break;
@@ -41,7 +40,7 @@ public class TeamCommand implements CommandExecutor {
                         blueTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     }
-                    ByteplexMatches.blueTeam.add(p.getName());
+                    ByteplexMatches.blueTeam.add(p.getUniqueId());
                     NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.BLUE + p.getName());
                     p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     break;
