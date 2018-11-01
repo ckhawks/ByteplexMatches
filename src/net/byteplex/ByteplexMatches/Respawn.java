@@ -91,6 +91,7 @@ public class Respawn implements Listener {
         }
     }
 
+    //  return what team the player is on 
     private int getTeam(Player player) {
         if (redTeam.contains(player.getUniqueId())) {
             return Team.RED;
@@ -101,6 +102,7 @@ public class Respawn implements Listener {
         }
     }
 
+    //  set a counter for the amount of kills each team has 
     private void teamKills(Player victim, Player attacker) {
         if (getTeam(attacker) != getTeam(victim)) {
             switch (getTeam(attacker)) {
@@ -155,6 +157,7 @@ public class Respawn implements Listener {
                         + ChatColor.WHITE + " from "
                         + ChatColor.RED + playerDistance + ((playerDistance == 1) ? " block " : " blocks ") + ChatColor.WHITE + "away."));
 
+        //  teleport player when dead to team spawn 
         switch (getTeam(victim)) {
             case Team.RED:
                 victim.teleport(redSpawn);
@@ -172,6 +175,7 @@ public class Respawn implements Listener {
         victim.setHealth(20.0);
         victim.setFoodLevel(20);
 
+        // set the players inventory with these items when spawn
         PlayerInventory i = victim.getInventory();
         i.clear();
         i.addItem(new ItemStack(Material.IRON_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.WOOD, 64));

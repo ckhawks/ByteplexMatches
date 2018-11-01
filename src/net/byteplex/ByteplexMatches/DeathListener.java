@@ -41,7 +41,7 @@ public class DeathListener implements Listener {
             itemName = killerItem.getType().name().toLowerCase().replaceAll("_", " ");
             itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1, itemName.length());
         }
-
+        // make the chat look pretty 
         e.setDeathMessage(ChatFormat.formatExclaim(ChatLevel.INFO,
                 ChatColor.BLUE + victim.getName()
                         + ChatColor.WHITE + " has been killed by "

@@ -33,10 +33,10 @@ public class TeamCommand implements CommandExecutor {
                     p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
                     break;
                 case "blue":
-                    if (redTeam.contains(p.getName())) {
+                    if (redTeam.contains(p.getName())) {  // if player is on the red team then remove him 
                         redTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                    } else if (blueTeam.contains(p.getName())) {
+                    } else if (blueTeam.contains(p.getName())) {  //  if player is on the blue team then remove him 
                         blueTeam.remove(p.getName());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     }

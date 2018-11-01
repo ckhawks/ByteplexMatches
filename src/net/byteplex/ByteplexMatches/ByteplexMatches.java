@@ -12,8 +12,8 @@ public class ByteplexMatches extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(new Respawn(), this);
-        this.getCommand("setloc").setExecutor(new SetSpawnLocation());
-        this.getCommand("team").setExecutor(new TeamCommand());
+        this.getCommand("setloc").setExecutor(new SetSpawnLocation()); //sets new spawn locations
+        this.getCommand("team").setExecutor(new TeamCommand());  // see what team the player is on 
     }
 
     @Override
