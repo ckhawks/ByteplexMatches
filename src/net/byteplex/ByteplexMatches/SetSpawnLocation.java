@@ -21,7 +21,7 @@ public class SetSpawnLocation implements CommandExecutor {
             Player player = (Player) commandSender;
             Location loc = player.getTargetBlock((Set< Material>)null,5).getLocation();
 
-            //  set the spawn of the red team to current location 
+            //  set teh spawn of the red team to current location 
             if(args[0].equalsIgnoreCase("red")){
 
                 Respawn.redSpawn = new Location(loc.getWorld(), loc.getX() + .5, loc.getY() + 1, loc.getZ() + .5);
