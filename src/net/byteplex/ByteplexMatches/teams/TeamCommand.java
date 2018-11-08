@@ -21,33 +21,44 @@ public class TeamCommand implements CommandExecutor {
             Player p = (Player) sender;
             switch (input) {
                 case "red":
-                    if (redTeam.contains(p.getName())) { //if player is on red team then remove him
-                        redTeam.remove(p.getName());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                    } else if (blueTeam.contains(p.getName())) { //if player is on blue team then remove him
-                        blueTeam.remove(p.getName());
+                    //if player is on blue team then remove him
+                    if (blueTeam.contains(p.getUniqueId())) {
+                        blueTeam.remove(p.getUniqueId());
                         p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
                     }
-                    redTeam.add(p.getUniqueId());
-                    NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.RED + p.getName());
-                    p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
+                    //  if player is already on the red team then display message
+                    else if (redTeam.contains(p.getUniqueId())){
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You are already on the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
+                    }
+                    //  add them to the red team
+                    else {
+                        redTeam.add(p.getUniqueId());
+                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.RED + p.getName());
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
+                    }
                     break;
                 case "blue":
-                    if (redTeam.contains(p.getName())) {  // if player is on the red team then remove him 
-                        redTeam.remove(p.getName());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                    } else if (blueTeam.contains(p.getName())) {  //  if player is on the blue team then remove him 
-                        blueTeam.remove(p.getName());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
+                    // if player is on the red team then remove him
+                    if (redTeam.contains(p.getUniqueId())) {
+                        redTeam.remove(p.getUniqueId());
                     }
-                    ByteplexMatches.blueTeam.add(p.getUniqueId());
-                    NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.BLUE + p.getName());
-                    p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
-                    break;
-                default:
-                    p.sendMessage("Incorrect usage!");
+                    //  if the player is already on the blue team then display message
+                    else if (blueTeam.contains(p.getUniqueId())){
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You are already on the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
+                    }
+                    //  add them to the blue team
+                    else {
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
+                        ByteplexMatches.blueTeam.add(p.getUniqueId());
+                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.BLUE + p.getName());
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
+                        break;
+                    }
+                        default:
+                            p.sendMessage("Incorrect usage!");
+                            p.sendMessage("Type \"/team <red>/<blue>\" to join a team!");
+                    }
             }
+            return true;
         }
-        return true;
     }
-}
