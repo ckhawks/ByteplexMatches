@@ -1,5 +1,7 @@
 package net.byteplex.ByteplexMatches.teams;
 
+//  WE CAN GET RID OF THIS
+
 //  set enums for different teams 
 public class Team {
     public static final int NONE = 0;

@@ -9,56 +9,46 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static net.byteplex.ByteplexMatches.ByteplexMatches.blueTeam;
-import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
+import static net.byteplex.ByteplexMatches.ByteplexMatches.teams_map;
 
 public class TeamCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        String input = args[0].toLowerCase();
+        String input_team = args[0].toLowerCase();
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            switch (input) {
-                case "red":
-                    //if player is on blue team then remove him
-                    if (blueTeam.contains(p.getUniqueId())) {
-                        blueTeam.remove(p.getUniqueId());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
+            //  make sure the player is joining the red or blue team
+            if (input_team.equals("red") || input_team.equals("blue")){
+                //  if there is no one in the hashmap, add him to his desired team
+
+                //  teams can be scalable with this for future
+                if (teams_map.isEmpty()){
+                    teams_map.put(p.getUniqueId(), input_team);
+                }
+                //  if player is already in a team and wants to switch
+                else if(teams_map.containsKey(p.getUniqueId())){
+                    //  make sure he is not trying to join the team he is already in
+                    if((teams_map.get(p.getUniqueId()).equals(input_team))){
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You are already on the " + input_team + " team!"));
                     }
-                    //  if player is already on the red team then display message
-                    else if (redTeam.contains(p.getUniqueId())){
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You are already on the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                    }
-                    //  add them to the red team
+                    //  switch to his desired team
                     else {
-                        redTeam.add(p.getUniqueId());
-                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.RED + p.getName());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
+                        teams_map.replace(p.getUniqueId(), input_team);
+                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + input_team + " team!"));
                     }
-                    break;
-                case "blue":
-                    // if player is on the red team then remove him
-                    if (redTeam.contains(p.getUniqueId())) {
-                        redTeam.remove(p.getUniqueId());
-                    }
-                    //  if the player is already on the blue team then display message
-                    else if (blueTeam.contains(p.getUniqueId())){
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You are already on the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
-                    }
-                    //  add them to the blue team
-                    else {
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have left the " + ChatColor.RED + "Red " + ChatColor.RESET + "team!"));
-                        ByteplexMatches.blueTeam.add(p.getUniqueId());
-                        NameTagChanger.INSTANCE.changePlayerName(p, ChatColor.BLUE + p.getName());
-                        p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + ChatColor.BLUE + "Blue " + ChatColor.RESET + "team!"));
-                        break;
-                    }
-                        default:
-                            p.sendMessage("Incorrect usage!");
-                            p.sendMessage("Type \"/team <red>/<blue>\" to join a team!");
-                    }
+                }
+                //  if player has not joined team at all
+                else {
+                    teams_map.put(p.getUniqueId(), input_team);
+                    p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You have joined the " + input_team + " team!"));
+                }
+
             }
-            return true;
+            else {
+                p.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO, "You must either join the" + ChatColor.RED + "red team " + ChatColor.RESET + "or the "+ ChatColor.BLUE + "blue team!"));
+            }
         }
+        return true;
     }
+}

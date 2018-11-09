@@ -6,8 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class ByteplexMatches extends JavaPlugin {
-   public static List<UUID> redTeam = new ArrayList<>();
-   public static List<UUID> blueTeam = new ArrayList<>();
+   public static Map <UUID, String> teams_map = new HashMap<UUID, String>();
 
     @Override
     public void onEnable() {
