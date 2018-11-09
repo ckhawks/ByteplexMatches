@@ -11,10 +11,10 @@ public class ByteplexMatches extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(new Respawn(), this);
+        this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
         this.getCommand("setloc").setExecutor(new SetSpawnLocation()); //sets new spawn locations
         this.getCommand("team").setExecutor(new TeamCommand());  // see what team the player is on 
     }
-
     @Override
     public void onDisable(){
 

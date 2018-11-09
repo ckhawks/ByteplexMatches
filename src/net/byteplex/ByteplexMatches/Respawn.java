@@ -2,7 +2,6 @@ package net.byteplex.ByteplexMatches;
 
 import net.byteplex.ByteplexCore.util.ChatFormat;
 import net.byteplex.ByteplexCore.util.ChatLevel;
-import net.byteplex.ByteplexMatches.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -64,7 +63,7 @@ public class Respawn implements Listener {
         if (attacker != null && victim != null) {
 
             // team kill check
-            if (getTeam(attacker) == getTeam(victim)) {
+            if (getTeam(attacker).equals(getTeam(victim))) {
                 e.setCancelled(true);
 
                 // don't display teamkill complaining message unless more than 3 seconds have passed since last teamkill attempt
@@ -92,11 +91,11 @@ public class Respawn implements Listener {
 
 
     //  return what team the player is on 
-    private String getTeam(Player player) {
+    public String getTeam(Player player) {
         if (teams_map.containsKey(player.getUniqueId())) {
             return teams_map.get(player.getUniqueId());
         }
-        return null;
+        return "";
     }
 
     //  set a counter for the amount of kills each team has 
@@ -146,15 +145,32 @@ public class Respawn implements Listener {
         }
 
         Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO,
-                ChatColor.BLUE + victim.getName()
+                ((getTeam(victim).equals("blue")) ? ChatColor.BLUE : ChatColor.RED) + victim.getName()
                         + ChatColor.WHITE + " has been killed by "
-                        + ChatColor.RED + attacker.getName()
+                        + ((getTeam(victim).equals("blue")) ? ChatColor.BLUE : ChatColor.RED) + attacker.getName()
                         + ChatColor.WHITE + " with "
                         + ChatColor.GREEN + itemName
                         + ChatColor.WHITE + " from "
                         + ChatColor.RED + playerDistance + ((playerDistance == 1) ? " block " : " blocks ") + ChatColor.WHITE + "away."));
 
-        //  teleport player when dead to team spawn 
+
+        teleport(victim);
+        // set the players inventory with these items when spawn
+        PlayerInventory i = victim.getInventory();
+        i.clear();
+        i.addItem(new ItemStack(Material.IRON_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.WOOD, 64));
+        i.setItem(10, new ItemStack(Material.ARROW, 64));
+        i.setHelmet(new ItemStack(Material.LEATHER_HELMET));
+        i.setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+        i.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+        i.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+
+    }
+
+    //  teleport player when dead to appropriate spawn
+    public void teleport(Player victim){
+        victim.setHealth(20.0);
+        victim.setFoodLevel(20);
         switch (getTeam(victim)) {
             case "red":
                 victim.teleport(redSpawn);
@@ -166,18 +182,5 @@ public class Respawn implements Listener {
                 victim.teleport(neutralSpawn);
                 break;
         }
-        victim.setHealth(20.0);
-        victim.setFoodLevel(20);
-
-        // set the players inventory with these items when spawn
-        PlayerInventory i = victim.getInventory();
-        i.clear();
-        i.addItem(new ItemStack(Material.IRON_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.WOOD, 64));
-        i.setItem(10, new ItemStack(Material.ARROW, 64));
-        i.setHelmet(new ItemStack(Material.LEATHER_HELMET));
-        i.setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
-        i.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-        i.setBoots(new ItemStack(Material.LEATHER_BOOTS));
-
     }
 }

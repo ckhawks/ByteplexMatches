@@ -41,7 +41,6 @@ public class SetSpawnLocation implements CommandExecutor {
                 Respawn.neutralSpawn = new Location(loc.getWorld(), loc.getX() + .5, loc.getY() + 1, loc.getZ() + .5);
                 player.sendMessage(ChatFormat.formatExclaim(ChatLevel.INFO ,ChatColor.WHITE + "You set neutral's respawn location to "
                         + (int) Respawn.neutralSpawn.getX() + ", " + (int) Respawn.neutralSpawn.getY() + ", " + (int) Respawn.neutralSpawn.getZ()));
-
             }
         }
         return true;

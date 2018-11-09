@@ -2,9 +2,11 @@ package net.byteplex.ByteplexMatches;
 
 import net.byteplex.ByteplexCore.util.ChatFormat;
 import net.byteplex.ByteplexCore.util.ChatLevel;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
@@ -13,46 +15,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 //  DO WE EVEN NEED THIS CLASS
 
 
-public class DeathListener implements Listener {
+public class DeathListener extends Respawn implements Listener {
 
+    //  makes sure that if the player dies from anything other than players that they get teleported to appropriate spawn
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e){
-        Player victim = e.getEntity();
-        Player killer = e.getEntity().getKiller();
-
-        ItemStack killerItem = killer.getInventory().getItemInMainHand();
-
-        // calculate distance between attacker and victim
-        int playerDistance = (int) killer.getLocation().distance(victim.getLocation());
-
-        String itemName;
-        // if the item has special data
-        if(killerItem.hasItemMeta()){
-            ItemMeta meta = killerItem.getItemMeta();
-
-            // check if it has an "anvil'd" name
-            if(meta.hasDisplayName()){
-                itemName = killerItem.getItemMeta().getDisplayName();
-
-            // no anviled name
-            } else {
-                itemName = killerItem.getType().name().toLowerCase().replaceAll("_", " ");
-                itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1, itemName.length());
-            }
-        // no special data
-        } else {
-            itemName = killerItem.getType().name().toLowerCase().replaceAll("_", " ");
-            itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1, itemName.length());
+    public void onPlayerDeath(EntityDamageEvent e) {
+        Player p = (Player) e.getEntity();
+        if (p.getHealth() - e.getFinalDamage() < 1){
+            e.setCancelled(true);
+            teleport(p);
+            Bukkit.broadcastMessage(ChatFormat.formatExclaim(ChatLevel.INFO, p.getDisplayName() + " has died from natural causes"));
         }
-        // make the chat look pretty 
-        e.setDeathMessage(ChatFormat.formatExclaim(ChatLevel.INFO,
-                ChatColor.BLUE + victim.getName()
-                        + ChatColor.WHITE + " has been killed by "
-                        + ChatColor.RED + killer.getName()
-                        + ChatColor.WHITE + " with "
-                        + ChatColor.GREEN  + itemName
-                        + ChatColor.WHITE + " from "
-                        + ChatColor.RED + playerDistance + " blocks " + ChatColor.WHITE + "away."));
-
     }
 }
