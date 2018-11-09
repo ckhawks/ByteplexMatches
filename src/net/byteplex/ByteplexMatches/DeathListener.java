@@ -10,6 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 
+//  DO WE EVEN NEED THIS CLASS
+
+
 public class DeathListener implements Listener {
 
     @EventHandler

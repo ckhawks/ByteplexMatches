@@ -22,8 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static net.byteplex.ByteplexMatches.ByteplexMatches.blueTeam;
-import static net.byteplex.ByteplexMatches.ByteplexMatches.redTeam;
+import static net.byteplex.ByteplexMatches.ByteplexMatches.teams_map;
 
 public class Respawn implements Listener {
     public static Location redSpawn;
@@ -91,25 +90,23 @@ public class Respawn implements Listener {
         }
     }
 
+
     //  return what team the player is on 
-    private int getTeam(Player player) {
-        if (redTeam.contains(player.getUniqueId())) {
-            return Team.RED;
-        } else if (blueTeam.contains(player.getUniqueId())) {
-            return Team.BLUE;
-        } else {
-            return Team.NONE;
+    private String getTeam(Player player) {
+        if (teams_map.containsKey(player.getUniqueId())) {
+            return teams_map.get(player.getUniqueId());
         }
+        return null;
     }
 
     //  set a counter for the amount of kills each team has 
     private void teamKills(Player victim, Player attacker) {
         if (getTeam(attacker) != getTeam(victim)) {
             switch (getTeam(attacker)) {
-                case Team.RED:
+                case "red":
                     redKills++;
                     break;
-                case Team.BLUE:
+                case "blue":
                     blueKills++;
                     break;
             }
@@ -159,17 +156,14 @@ public class Respawn implements Listener {
 
         //  teleport player when dead to team spawn 
         switch (getTeam(victim)) {
-            case Team.RED:
+            case "red":
                 victim.teleport(redSpawn);
                 break;
-            case Team.BLUE:
+            case "blue":
                 victim.teleport(blueSpawn);
                 break;
-            case Team.NONE:
-                victim.teleport(neutralSpawn);
-                break;
             default:
-                victim.teleport(victim.getWorld().getSpawnLocation());
+                victim.teleport(neutralSpawn);
                 break;
         }
         victim.setHealth(20.0);
@@ -187,4 +181,3 @@ public class Respawn implements Listener {
 
     }
 }
-
